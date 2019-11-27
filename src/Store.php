@@ -7,6 +7,7 @@ use Illuminate\Cache\TaggableStore;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Cache\Store as StoreContract;
 use Illuminate\Cache\RetrievesMultipleKeys;
+Use Illuminate\Support\Str;
 
 class Store extends TaggableStore implements StoreContract
 {
@@ -55,14 +56,14 @@ class Store extends TaggableStore implements StoreContract
             Log::warning('You do not have the Zend OPcache extension loaded!');
         }
 
-        $this->prefix = str_slug($prefix ?: config('app.name', 'opcache'), '-');
+        $this->prefix = Str::slug($prefix ?: config('app.name', 'opcache'), '-');
 
         /*
          * In case if `OpCache` file path not being set we will use `file` driver path
          */
         $this->directory = $directory ?: config('cache.stores.opcache.path', config('cache.stores.file.path'));
     }
-    
+
     /**
      * Begin executing a new tags operation.
      *
